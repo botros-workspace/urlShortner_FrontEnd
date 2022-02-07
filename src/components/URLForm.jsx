@@ -12,7 +12,7 @@ function URLForm() {
     }
     const id = nanoid()
     const document = {
-      url_id: id,
+      //url_id: id,
       original_url: url,
       validation_period: period,
       valid: true,
@@ -20,6 +20,9 @@ function URLForm() {
     axios
       .post('http://127.0.0.1:8000/urls/', document)
       .then((response) => setMsg(response.data.hashed_url))
+      .catch((error) => {
+        setMsg(error.message)
+      })
     setUrl('')
     setPeriod('')
   }

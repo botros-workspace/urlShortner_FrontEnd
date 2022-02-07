@@ -3,15 +3,23 @@ import axios from 'axios'
 import { MdDelete } from 'react-icons/md'
 
 function ListComponent({ item, index, delete: update }) {
-  const delete_item = (url_id) => {
-    if (window.confirm('Are you sure you wish to delete this item?')) {
-      axios.delete(`http://127.0.0.1:8000/urls/${url_id}/`)
+  const delete_item = (hashed_url) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete item number ${hashed_url.slice(-5)} ?`
+      )
+    ) {
+      axios
+        .delete(`http://127.0.0.1:8000/urls/${hashed_url.slice(-5)}/`)
+        .catch((error) => {
+          window.alert(error.message)
+        })
     }
     update()
   }
   return (
     <tr
-      key={item.url_id}
+      key={item.hashed_url}
       className={index % 2 !== 0 ? 'bg-gray-200' : 'bg-white'}
     >
       <td className='px-4 py-6 '>
@@ -42,7 +50,7 @@ function ListComponent({ item, index, delete: update }) {
       <td className='px-4 py-6'>
         <button
           onClick={() => {
-            delete_item(item.url_id)
+            delete_item(item.hashed_url)
           }}
           class=' text-gray-900 hover:text-gray-500  text-xl m-2'
         >
